@@ -37,10 +37,17 @@ void init_oledDisplay() {
     // Timer setup
     oled_timer = timerBegin(0, 80, true);
     timerAttachInterrupt(oled_timer, &oled_timer_isr, true);
-    timerAlarmWrite(oled_timer, 500000, true);
+    timerAlarmWrite(oled_timer, DISPLAY_UPDATE_TIME * 1000, true);
     timerAlarmEnable(oled_timer);
 
+    // Makes semaphore flag binary 1 & 0
     oledSemaphore = xSemaphoreCreateBinary();
+
+    // Initial screen
+    if(!oled.begin(SSD1306_SWITCHCAPVCC)) {
+        Serial.print(F("SSD13006 allocation failed"));
+        for(;;);
+    }
 }
 
 void check_display_update() {
