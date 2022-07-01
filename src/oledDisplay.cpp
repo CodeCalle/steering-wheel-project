@@ -19,9 +19,7 @@ void ud(Adafruit_SSD1306* odp, int spd, int sc) {
     odp->display();
 }
 
-
-// Adding code for Semaphore
-
+/* ----------- Semaphore code ----------- */
 // Handle to the hardware timer
 hw_timer_t* oled_timer = NULL;
 
