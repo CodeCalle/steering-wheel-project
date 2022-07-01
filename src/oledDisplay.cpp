@@ -3,20 +3,20 @@
 /**
  * @brief The function that displays the data on the screen
  * 
- * @param o Pointer to oled object
+ * @param odp Pointer to oled object
  * @param spd Int array with speed test data
  * @param sc Int array with state of charce test data
  */
-void ud(Adafruit_SSD1306* o, int spd, int sc) {
-    o->clearDisplay();
-    o->setTextSize(2);
-    o->setTextColor(SSD1306_WHITE);
+void ud(Adafruit_SSD1306* odp, int spd, int sc) {
+    odp->clearDisplay();
+    odp->setTextSize(2);
+    odp->setTextColor(SSD1306_WHITE);
     
-    o->setCursor(0, 0);
-    o->printf("Speed: %d", spd);
-    o->setCursor(0, 30);
-    o->printf("SoC: %d", sc);
-    o->display();
+    odp->setCursor(0, 0);
+    odp->printf("Speed: %d", spd);
+    odp->setCursor(0, 30);
+    odp->printf("SoC: %d", sc);
+    odp->display();
 }
 
 
@@ -26,11 +26,11 @@ void ud(Adafruit_SSD1306* o, int spd, int sc) {
 hw_timer_t* oled_timer = NULL;
 
 // Flags when the oled_timer alarm has gone off
-SemaphoreHandle_t oledSemaphore;
+SemaphoreHandle_t oled_semaphore;
 
 void ARDUINO_ISR_ATTR oled_timer_isr() {
   // Gives a semaphore signaling that the timer has gone off
-  xSemaphoreGiveFromISR(oledSemaphore, NULL);
+  xSemaphoreGiveFromISR(oled_semaphore, NULL);
 }
 
 void init_oledDisplay() {
@@ -41,7 +41,7 @@ void init_oledDisplay() {
     timerAlarmEnable(oled_timer);
 
     // Makes semaphore flag binary 1 & 0
-    oledSemaphore = xSemaphoreCreateBinary();
+    oled_semaphore = xSemaphoreCreateBinary();
 
     // Initial screen
     if(!oled.begin(SSD1306_SWITCHCAPVCC)) {
@@ -51,9 +51,9 @@ void init_oledDisplay() {
 }
 
 void check_display_update() {
-    if(xSemaphoreTake(oledSemaphore, 0) == 1) {
+    if(xSemaphoreTake(oled_semaphore, 0) == 1) {
         for (int i = 0; i < 11; i++) {
-            ud(&oled, speed[i], SoC[i]);
+            ud(&oled, speed[i], state_of_charge[i]);
         }
     }
 }
