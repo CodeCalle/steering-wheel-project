@@ -29,9 +29,9 @@ static int speed[] = {10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20};
 static int state_of_charge[] = {100, 99, 98, 97, 96, 95, 94, 93, 92, 91, 90};
 
 /* ----------- Function declarations ----------- */
-void init_oledDisplay();
+void init_oled_display();
 void check_display_update();
 void ARDUINO_ISR_ATTR oled_timer_isr();
-void ud(Adafruit_SSD1306* odp, int spd, int sc);
+void display_update(Adafruit_SSD1306* odp, int spd, int sc);
 
 #endif
