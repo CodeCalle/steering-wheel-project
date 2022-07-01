@@ -11,7 +11,7 @@
 #define SCREEN_HEIGHT 64
 
 // Define ESP32 output ports to SSD1309 OLED display ports
-#define OLED_MOSI   23
+#define OLED_MOSI   19
 #define OLED_CLK    18
 #define OLED_DC     16
 #define OLED_CS     5
