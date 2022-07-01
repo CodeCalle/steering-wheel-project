@@ -27,83 +27,70 @@
  */
 #define DEBOUNCE_TIME 150
 
+/**
+ * @brief The on/off time in ms of the LED blinking. 
+ * 
+ */
+#define BLINKER_SPEED 500
+
 /// LED GPIO pins defined on the board
-enum LED_PIN {
-    PIN_Left_LED = 25,    /// The GPIO pin for left indicator LED
-    PIN_Hazard_LED = 26,  /// The GPIO pin for hazard indicator LED
-    PIN_Right_LED = 32,   /// The GPIO pin for right indicator LED
-    PIN_Battery_LED = 33  /// The GPIO pin for battery warning indicator LED
+enum led_pin {
+  PIN_LEFT_LED    = 33, /// The GPIO pin for left indicator LED
+  PIN_HAZARD_LED  = 25, /// The GPIO pin for hazard indicator LED
+  PIN_RIGHT_LED   = 26, /// The GPIO pin for right indicator LED
+  PIN_BATTERY_LED = 32  /// The GPIO pin for battery warning indicator LED
 };
 
 
 /// Button GPIO pins defined on the board
-enum BUTTON_PIN {
-    PIN_Left_Button = 27,  /// The GPIO pin for left indicator button
-    PIN_Hazard_Button = 14, /// The GPIO pin for hazard indicator button
-    PIN_Right_Button = 12   /// The GPIO pin for right indicator button
+enum button_pin{
+  PIN_LEFT_Button   = 27, /// The GPIO pin for left indicator button
+  PIN_HAZARD_Button = 14, /// The GPIO pin for hazard indicator button
+  PIN_RIGHT_BUTTON  = 12  /// The GPIO pin for right indicator button
 };
 
 /// ISR ID's used for struct identification in the ISR
-enum ISR_ID {
-    ISR_Linker,
+enum isr_id {
+  ISR_LINKER,
 };
 
 /**
- * @brief ISR_ID is used in the ISR to identify the type of argument
+ * @brief Isr_id is used in the ISR to identify the type of argument
  * that was passed. This requires each argument that is passed to 
- * have a ISR_ID in the beginning of its struct.
+ * have a Isr_id in the beginning of its struct.
  * 
  */
 struct isr_arg {
-  ISR_ID ID;
+  isr_id id;
 };
 
-// Tells what button should toggle what LED
-struct Linker {
-  ISR_ID     ID;
-  uint32_t debounce_time;
-  BUTTON_PIN btn_pin;
-  LED_PIN    LED_pin;
+/**
+ * @brief The linker struct links a button and led togheter. This link 
+ * is later used in multiple functions to know which button should 
+ * activate which LED.
+ * 
+ */
+struct linker {
+  isr_id     id;
+  uint32_t   debounce_time;
+  button_pin btn_pin;
+  led_pin    led;
 
-  Linker(BUTTON_PIN x, LED_PIN y) : 
-    ID(ISR_Linker), 
+  linker(button_pin x, led_pin y) : 
+    id(ISR_LINKER), 
     debounce_time(millis()),
     btn_pin(x), 
-    LED_pin(y) {}
+    led(y) {}
 };
 
-/**
- * @brief Toggles the LED GPIO pin HIGH or LOW depending on its state. 
- * HIGH is set LOW and LOW is set HIGH.
- * 
- * @param pin: The LED GPIO pin number.
- */
-void toggleLED(LED_PIN pin);
+// --- Functions ---
 
-
-/**
- * @brief Toggles only one LED at a time. To switch the LED being 
- * toggled change nextLED. When switching LED this function also turns
- * off the old LED.
- * 
- * @param nextLED The next LED to start blinking.
- * @param blinkingLED The LED blinking, used to keep track of the LED blinking.
- */
-void blinker(Linker** nextLED, Linker** blinkingLED);
-
-/* ----------------------------------------------------------- */
-
-#define BLINKER_SPEED 500 // Time in ms
-
+void toggle_led(led_pin pin);
+void update_blinking_led(linker** nextLED, linker** blinkingLED);
 void init_blink();
-void checkIfBlink();
+void update_blink();
+void toggle_warning_led();
 
-extern SemaphoreHandle_t blinkSemaphore;
-
-// Keeps track of what LED to blink and what LED was being blinked
-extern Linker* blink;
-extern Linker* newBlink;
-
-/* ----------------------------------------------------------- */
+// ---------------
 
 #endif
