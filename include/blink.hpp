@@ -31,16 +31,16 @@
 enum LED_PIN {
     PIN_Left_LED = 25,    /// The GPIO pin for left indicator LED
     PIN_Hazard_LED = 26,  /// The GPIO pin for hazard indicator LED
-    PIN_Right_LED = 27,   /// The GPIO pin for right indicator LED
+    PIN_Right_LED = 32,   /// The GPIO pin for right indicator LED
     PIN_Battery_LED = 33  /// The GPIO pin for battery warning indicator LED
 };
 
 
 /// Button GPIO pins defined on the board
 enum BUTTON_PIN {
-    PIN_Left_Button = 17,  /// The GPIO pin for left indicator button
-    PIN_Hazard_Button = 16, /// The GPIO pin for hazard indicator button
-    PIN_Right_Button = 4   /// The GPIO pin for right indicator button
+    PIN_Left_Button = 27,  /// The GPIO pin for left indicator button
+    PIN_Hazard_Button = 14, /// The GPIO pin for hazard indicator button
+    PIN_Right_Button = 12   /// The GPIO pin for right indicator button
 };
 
 /// ISR ID's used for struct identification in the ISR
