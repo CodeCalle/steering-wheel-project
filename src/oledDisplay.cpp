@@ -18,3 +18,35 @@ void ud(Adafruit_SSD1306* o, int spd, int sc) {
     o->printf("SoC: %d", sc);
     o->display();
 }
+
+
+// Adding code for Semaphore
+
+// Handle to the hardware timer
+hw_timer_t* oled_timer = NULL;
+
+// Flags when the oled_timer alarm has gone off
+SemaphoreHandle_t oledSemaphore;
+
+void ARDUINO_ISR_ATTR oled_timer_isr() {
+  // Gives a semaphore signaling that the timer has gone off
+  xSemaphoreGiveFromISR(oledSemaphore, NULL);
+}
+
+void init_oledDisplay() {
+    // Timer setup
+    oled_timer = timerBegin(0, 80, true);
+    timerAttachInterrupt(oled_timer, &oled_timer_isr, true);
+    timerAlarmWrite(oled_timer, 500000, true);
+    timerAlarmEnable(oled_timer);
+
+    oledSemaphore = xSemaphoreCreateBinary();
+}
+
+void check_display_update() {
+    if(xSemaphoreTake(oledSemaphore, 0) == 1) {
+        for (int i = 0; i < 11; i++) {
+            ud(&oled, speed[i], SoC[i]);
+        }
+    }
+}
