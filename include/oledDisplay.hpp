@@ -29,6 +29,6 @@ void init_oledDisplay();
 void check_display_update();
 void ARDUINO_ISR_ATTR oled_timer_isr();
 
-void ud(Adafruit_SSD1306* odp, int spd, int Sc);
+void ud(Adafruit_SSD1306* odp, int spd, int sc);
 
 #endif
