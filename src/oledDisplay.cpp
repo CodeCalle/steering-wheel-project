@@ -1,5 +1,9 @@
 #include "oledDisplay.hpp"
 
+// Defines and initilizes the object
+Adafruit_SSD1306 oled(SCREEN_WIDTH, SCREEN_HEIGHT,
+    OLED_MOSI, OLED_CLK, OLED_DC, OLED_RESET, OLED_CS);
+
 /**
  * @brief The function that displays the data on the screen
  * 
@@ -41,7 +45,7 @@ void init_oled_display() {
     // Makes semaphore flag binary 1 & 0
     oled_semaphore = xSemaphoreCreateBinary();
 
-    // Initial screen
+    // Initilizes display
     if(!oled.begin(SSD1306_SWITCHCAPVCC)) {
         Serial.print(F("SSD13006 allocation failed"));
         for(;;);

@@ -21,8 +21,8 @@ to SSD1309 OLED display ports ----------- */
 /* ----------- Change to edit timer delay ----------- */
 #define DISPLAY_UPDATE_TIME 500
 
-static Adafruit_SSD1306 oled(SCREEN_WIDTH, SCREEN_HEIGHT,
-  OLED_MOSI, OLED_CLK, OLED_DC, OLED_RESET, OLED_CS);
+// Declares the object
+extern Adafruit_SSD1306 oled;
 
 /* ----------- Test data ----------- */
 static int speed[] = {10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20};
