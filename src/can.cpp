@@ -1,4 +1,5 @@
 #include "can.h"
+#include <Arduino.h>
 
 // Message reception
 twai_message_t rx_message;
@@ -46,4 +47,49 @@ void receive_can_message() {
         break;
     }
     }
+}
+
+void float2Bytes(float val, uint8_t* bytes_array){
+  // Create union of shared memory space
+  union {
+    float float_variable;
+    uint8_t temp_array[4];
+  } u;
+  // Overite bytes of union with float variable
+  u.float_variable = val;
+  // Assign bytes to input array
+  memcpy(bytes_array, u.temp_array, 4);
+}
+
+esp_err_t send_soc(float soc) {
+    twai_message_t message;
+    message.identifier = 0x424;
+    message.extd = 1;
+    message.data_length_code = 4;
+
+    float2Bytes(soc, message.data);
+
+    return twai_transmit(&message, 0);
+}
+
+esp_err_t send_speed(uint16_t spd) {
+    
+    //Configure message to transmit
+    twai_message_t message;
+    message.identifier = 0x423;
+    message.extd = 1;
+    message.data_length_code = 8;
+    message.data[0] = (uint8_t) spd;
+    message.data[1] = (uint8_t) (spd>>8);;
+    message.data[2] = 0x00;
+    message.data[3] = 0x00;
+    message.data[4] = 0x00;
+    message.data[5] = 0x00;
+    message.data[6] = 0x00; //(uint8_t) (spd>>8);
+    message.data[7] = 0x00; //(uint8_t) spd;
+
+    //for (int i = 2; i < 8; i++)
+    //    message.data[i] = 0;
+
+    return twai_transmit(&message, 0);
 }

@@ -13,5 +13,7 @@
  */
 esp_err_t config_and_start_twai();
 void receive_can_message();
+esp_err_t send_speed(uint16_t);
+esp_err_t send_soc(float soc);
 
 #endif
