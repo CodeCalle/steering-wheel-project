@@ -24,10 +24,6 @@ to SSD1309 OLED display ports ----------- */
 // Declares the object
 extern Adafruit_SSD1306 oled;
 
-/* ----------- Test data ----------- */
-static int speed[] = {10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20};
-static float state_of_charge[] = {100, 99.5, 98.5, 97.5, 96.5, 95.5, 94.5, 93.5, 92.5, 91.5, 90.5};
-
 /* ----------- Function declarations ----------- */
 void init_oled_display();
 void check_display_update();

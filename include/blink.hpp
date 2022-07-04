@@ -86,7 +86,6 @@ struct linker {
 // --- Functions ---
 
 void toggle_led(led_pin pin);
-void update_blinking_led(linker** nextLED, linker** blinkingLED);
 void init_blink();
 void update_blink();
 void toggle_warning_led();

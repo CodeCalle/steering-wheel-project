@@ -1,4 +1,8 @@
 #include "oledDisplay.hpp"
+#include "can.h"
+
+int speed = 0;
+float state_of_charge = 0;
 
 // Defines and initilizes the object
 Adafruit_SSD1306 oled(SCREEN_WIDTH, SCREEN_HEIGHT,
@@ -53,10 +57,21 @@ void init_oled_display() {
 }
 
 void check_display_update() {
-    if(xSemaphoreTake(oled_semaphore, 0) == 1) {
-        for (int i = 0; i < 11; i++) {
-            display_update(&oled, speed[i], state_of_charge[i]);
-            delay(200);
-        }
+    message rx_message;
+    receive_can_message(&rx_message);
+
+    switch (rx_message.id) {
+        case SPEED_ID:
+            speed = rx_message.data.speed;
+            break;
+        
+        case SOC_ID:
+            state_of_charge = rx_message.data.soc;
+            break;
+
+        default:
+        break;
     }
+
+    display_update(&oled, speed, state_of_charge);
 }
