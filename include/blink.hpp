@@ -35,10 +35,10 @@
 
 /// LED GPIO pins defined on the board
 enum led_pin {
-  PIN_LEFT_LED    = 33, /// The GPIO pin for left indicator LED
-  PIN_HAZARD_LED  = 25, /// The GPIO pin for hazard indicator LED
-  PIN_RIGHT_LED   = 26, /// The GPIO pin for right indicator LED
-  PIN_BATTERY_LED = 32  /// The GPIO pin for battery warning indicator LED
+  PIN_LEFT_LED    = 32, /// The GPIO pin for left indicator LED
+  PIN_HAZARD_LED  = 33, /// The GPIO pin for hazard indicator LED
+  PIN_RIGHT_LED   = 25, /// The GPIO pin for right indicator LED
+  PIN_BATTERY_LED = 26  /// The GPIO pin for battery warning indicator LED
 };
 
 
