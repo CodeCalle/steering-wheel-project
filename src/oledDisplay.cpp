@@ -19,7 +19,7 @@ void display_update(Adafruit_SSD1306* odp, int spd, int sc) {
     odp->setCursor(0, 0);
     odp->printf("Speed: %d", spd);
     odp->setCursor(0, 30);
-    odp->printf("SoC: %d", sc);
+    odp->printf("SoC: %.1f", sc);
     odp->display();
 }
 
