@@ -11,7 +11,7 @@ Adafruit_SSD1306 oled(SCREEN_WIDTH, SCREEN_HEIGHT,
  * @param spd Int array with speed test data
  * @param sc Int array with state of charce test data
  */
-void display_update(Adafruit_SSD1306* odp, int spd, int sc) {
+void display_update(Adafruit_SSD1306* odp, int spd, float sc) {
     odp->clearDisplay();
     odp->setTextSize(2);
     odp->setTextColor(SSD1306_WHITE);
@@ -19,7 +19,7 @@ void display_update(Adafruit_SSD1306* odp, int spd, int sc) {
     odp->setCursor(0, 0);
     odp->printf("Speed: %d", spd);
     odp->setCursor(0, 30);
-    odp->printf("SoC: %d", sc);
+    odp->printf("SoC: %.1f", sc);
     odp->display();
 }
 
@@ -56,6 +56,7 @@ void check_display_update() {
     if(xSemaphoreTake(oled_semaphore, 0) == 1) {
         for (int i = 0; i < 11; i++) {
             display_update(&oled, speed[i], state_of_charge[i]);
+            delay(200);
         }
     }
 }

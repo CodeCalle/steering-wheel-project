@@ -26,12 +26,12 @@ extern Adafruit_SSD1306 oled;
 
 /* ----------- Test data ----------- */
 static int speed[] = {10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20};
-static int state_of_charge[] = {100, 99, 98, 97, 96, 95, 94, 93, 92, 91, 90};
+static float state_of_charge[] = {100, 99.5, 98.5, 97.5, 96.5, 95.5, 94.5, 93.5, 92.5, 91.5, 90.5};
 
 /* ----------- Function declarations ----------- */
 void init_oled_display();
 void check_display_update();
 void ARDUINO_ISR_ATTR oled_timer_isr();
-void display_update(Adafruit_SSD1306* odp, int spd, int sc);
+void display_update(Adafruit_SSD1306* odp, int spd, float sc);
 
 #endif
