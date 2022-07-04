@@ -27,28 +27,7 @@ void display_update(Adafruit_SSD1306* odp, int spd, float sc) {
     odp->display();
 }
 
-/* ----------- Semaphore code ----------- */
-// Handle to the hardware timer
-hw_timer_t* oled_timer = NULL;
-
-// Flags when the oled_timer alarm has gone off
-SemaphoreHandle_t oled_semaphore;
-
-void ARDUINO_ISR_ATTR oled_timer_isr() {
-  // Gives a semaphore signaling that the timer has gone off
-  xSemaphoreGiveFromISR(oled_semaphore, NULL);
-}
-
 void init_oled_display() {
-    // Timer setup
-    oled_timer = timerBegin(0, 80, true);
-    timerAttachInterrupt(oled_timer, &oled_timer_isr, true);
-    timerAlarmWrite(oled_timer, DISPLAY_UPDATE_TIME * 1000, true);
-    timerAlarmEnable(oled_timer);
-
-    // Makes semaphore flag binary 1 & 0
-    oled_semaphore = xSemaphoreCreateBinary();
-
     // Initilizes display
     if(!oled.begin(SSD1306_SWITCHCAPVCC)) {
         Serial.print(F("SSD13006 allocation failed"));
